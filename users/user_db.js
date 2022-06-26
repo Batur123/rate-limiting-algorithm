@@ -59,9 +59,6 @@ class User {
      * Auth user by using redis-mongodb-cache results. If cache is expired then get results from MongoDB and add to cache with new expire duration.
      * Initial state of caching returns average 200ms in HTTP GET, after caching it returns average 5-10ms. Cache uses usernames as key's, so
      * usernames have to be unique.
-     * @param username
-     * @param password
-     * @returns {Promise<ConvertArgumentType<RedisCommandReply<{IS_READ_ONLY: boolean; transformArguments(key: RedisCommandArgument): RedisCommandArguments; transformReply(): (RedisCommandArgument | null); FIRST_KEY_INDEX: number}>, CommandOptions<ClientCommandOptions>["returnBuffers"] extends true ? Buffer : string>>}
      */
     async authUser(username, password) {
         return redisClient.get(`cache:user:${username}`).then(redisResponse => {
@@ -108,6 +105,7 @@ class User {
         }
 
         let redisResultJSON = JSON.parse(redisResult);
+        redisClient.expire(`cache:user:${redisResultJSON.username}`,expireDurationInMinutes);
         return redisResultJSON.username === username && redisResultJSON.password === password;
     }
 }
