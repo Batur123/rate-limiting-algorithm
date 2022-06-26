@@ -27,8 +27,6 @@ if(cluster.isMaster) {
         const User = new UserDB(getDb())
         await User.createUserCollectionIfNotExists();
         await User.cacheUsersIntoRedis();
-        //await User.getAllUsers();
-        //console.log("We use getAllUsers() for to see user tokens.");
 
         const publicRoutes = require('./routes/public_routes.js');
         const privateRoutes = require('./routes/private_routes.js');
