@@ -21,7 +21,7 @@ const rateLimitingMiddleware = (requestWeight) => {
             .then(result => {
                 const [prevValue,requests, ttl] = result;
 
-                if ((requests > 1 && ttl === -2) || prevValue === null) {
+                if ((requests > 1 && ttl < 0) || prevValue === null) {
                     redisClient.expire(ip, expireDurationInSeconds);
                 }
 
