@@ -18,7 +18,7 @@ const authMiddleware = async (req,res,next) => {
         return res.status(403).send("Username of password required for authentication");
     }
 
-    // remove empty options brackets if don't works
+    // remove empty options brackets if doesn't works
     jwt.verify(token, process.env.TOKEN_SECRET,{}, (err, result) => {
         if (err) {
             return res.status(401).send("Invalid Token");
@@ -75,13 +75,11 @@ const rateLimitingMiddleware = (requestWeight) => {
     return async (req, res, next) => {
         const token = res.locals.token;
 
-        const result = await redisClient.multi()
+        const [prevValue, requests, ttl] = await redisClient.multi()
             .get(token)
             .incrBy(token, requestWeight)
             .ttl(token)
             .exec();
-
-        const [prevValue, requests, ttl] = result;
 
         if ((requests > 1 && ttl < 0) || prevValue === null) {
             redisClient.expire(token, expireDurationInSeconds);
