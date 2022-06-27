@@ -15,8 +15,6 @@ class User {
             {_id: 3, username: 'test2', password: 'test2'},
             {_id: 4, username: 'batu', password: '123'}
         ].map(v => Object.assign(v, {token: jwt.sign(v, process.env.TOKEN_SECRET)}));
-         // Note: jwt.sign is normally not used like this. It is used when user logged-in via login page. It is just example.
-         // We dont need to implement login-register for now.
     }
 
     async getAllUsers() {
