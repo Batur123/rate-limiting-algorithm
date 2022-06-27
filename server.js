@@ -6,21 +6,22 @@ const {connectToRedis} = require('./database/redis-client.js');
 const express = require('express');
 const port = process.env.PORT || 8080;
 
-if(cluster.isMaster) {
-    console.log(`CPU Number: ${totalCPUs} - Master ${process.pid} is running`);
+(async () => {
+    if (cluster.isMaster) {
+        console.log(`CPU Number: ${totalCPUs} - Master ${process.pid} is running`);
 
-    for (let i = 0; i < totalCPUs; i++) {
-        cluster.fork();
-    }
+        for (let i = 0; i < totalCPUs; i++) {
+            cluster.fork();
+        }
 
-    cluster.on("exit", (worker, code, signal) => {
-        console.log(`Worker number -> ${worker.process.pid} died.`);
-        cluster.fork();
-    });
-} else {
-    const app = express();
+        cluster.on("exit", (worker, code, signal) => {
+            console.log(`Worker number -> ${worker.process.pid} died.`);
+            cluster.fork();
+        });
+    } else {
+        const app = express();
 
-    getInstance().then(async () => {
+        await getInstance();
         await connectToRedis();
 
         const UserDB = require('./users/user_db.js');
@@ -38,5 +39,5 @@ if(cluster.isMaster) {
         app.listen(port, () => {
             console.log(`Server started on port: ${port}`)
         });
-    });
-}
+    }
+})();
