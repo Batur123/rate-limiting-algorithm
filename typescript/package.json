@@ -1,0 +1,29 @@
+{
+  "name": "rate-limiting-algorithm-ts",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "build": "npx tsc",
+    "start": "npx ts-node-server.ts",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "Batuhan Özkoç",
+  "license": "ISC",
+  "dependencies": {
+    "axios": "^0.27.2",
+    "dotenv": "^16.0.1",
+    "express": "^4.18.1",
+    "jsonwebtoken": "^8.5.1",
+    "mongodb": "^4.7.0",
+    "redis": "^4.1.0"
+  },
+  "devDependencies": {
+    "@types/express": "^4.17.13",
+    "@types/jsonwebtoken": "^8.5.8",
+    "@types/node": "^18.0.0",
+    "jest": "^28.1.1",
+    "typescript": "^4.7.4"
+  }
+}
